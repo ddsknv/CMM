@@ -35,27 +35,39 @@ if __name__ == "__main__":
         prompt = test.prompt
         print(test.prompt)
 
-    # result1 = read_json("data/input/functions_definition.json")
-    # functions_list = []
+    result1 = read_json("data/input/functions_definition.json")
+    functions_list = []
 
-    # for item in result1:
-    #     function = FunctionDefinition.model_validate(item)
-    #     functions_list.append(function)
+    for item in result1:
+        function = FunctionDefinition.model_validate(item)
+        functions_list.append(function)
 
     selected_function = None
     for function in functions_list:
         print(function.name)
         if function.name == "fn_reverse_string":
             selected_function = function
-    # if selected_function is not None:
-    #     print(function.name, function.description, function.parameters)
+    if selected_function is not None:
+        print(function.name, function.description, function.parameters)
 
-    #     for param_name, param_info in function.parameters.items():
-    #         print(param_name, param_info.type)
+        for param_name, param_info in function.parameters.items():
+            print(param_name, param_info.type)
 
-    # print(len(functions_list))
-    # print(functions_list[0].parameters["a"].type)    
-    # print(functions_list[1].parameters["name"].type)    
+    print(len(functions_list))
+    print(functions_list[0].parameters["a"].type)    
+    print(functions_list[1].parameters["name"].type)    
 
-    # print(functions_list[2].description)    
+    print(functions_list[2].description)    
+
+    prompt_text = "Choose the most appropriate function for the user's request and return its parameters as JSON.\n"
+
+    prompt_text += f"\nUser request: {result[0]['prompt']}\n"
+
+    for function in functions_list:
+        prompt_text += f"{function.name}: {function.description}\n"
+
+        for param_name, param_info in function.parameters.items():
+            prompt_text += f"{param_name}: {param_info.type}\n"
+    
+    print(prompt_text)
 
