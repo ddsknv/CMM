@@ -1,7 +1,7 @@
 import json
 from typing import Literal
 from pydantic import BaseModel
-
+from llm_sdk import Small_LLM_Model
 
 class ParameterDefinition(BaseModel):
     type: Literal["string", "number"]
@@ -65,9 +65,11 @@ if __name__ == "__main__":
 
     for function in functions_list:
         prompt_text += f"{function.name}: {function.description}\n"
-
+        prompt_text += "Parameters:\n"
         for param_name, param_info in function.parameters.items():
-            prompt_text += f"{param_name}: {param_info.type}\n"
+            prompt_text += f"- {param_name}: {param_info.type}\n"
     
     print(prompt_text)
 
+    model = Small_LLM_Model()
+    print("Model loaded successfully")
